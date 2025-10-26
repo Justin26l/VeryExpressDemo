@@ -1,0 +1,40 @@
+{
+    "rootDir": ".",
+    "srcDir": "./src",
+    "sysDir": "./src/system",
+    "jsonSchemaDir": "./jsonSchema",
+    "openapiDir": "./src/openapi",
+    "generator": {
+        "disableVersionLabel": false,
+        "commitBeforeGenerate": false
+    },
+    "app": {
+        "enableSwagger": true,
+        "useUserSchema": true,
+        "useStatefulRedisAuth": false,
+        "useObjectID": true,
+        "allowApiCreateUpdate_id": false
+    },
+    "useRBAC": {
+        "roles": [
+            "user"
+        ],
+        "default": "user",
+        "schemaIncluded": [
+            "user"
+        ]
+    },
+    "sso": {
+        "useHttpOnlyCookieToken": false,
+        "oauthProviders": {
+            "google": false,
+            "microsoft": false,
+            "apple": false,
+            "github": false
+        }
+    },
+    "_": {
+        "headerComment": "",
+        "writtedDir": []
+    }
+}
