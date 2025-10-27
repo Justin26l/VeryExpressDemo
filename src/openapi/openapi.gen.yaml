@@ -10,6 +10,9 @@ paths:
       operationId: getListCustomer
       tags:
         - customer
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters:
         - name: _id
           in: query
@@ -76,6 +79,9 @@ paths:
       operationId: postCustomer
       tags:
         - customer
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters: []
       requestBody:
         description: post Customer
@@ -117,6 +123,9 @@ paths:
       operationId: getCustomer
       tags:
         - customer
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters:
         - name: id
           in: path
@@ -155,6 +164,9 @@ paths:
       operationId: patchCustomer
       tags:
         - customer
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters:
         - name: id
           in: path
@@ -200,6 +212,9 @@ paths:
       operationId: deleteCustomer
       tags:
         - customer
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters:
         - name: id
           in: path
@@ -240,6 +255,9 @@ paths:
       operationId: getListUser
       tags:
         - user
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters:
         - name: _id
           in: query
@@ -316,6 +334,9 @@ paths:
       operationId: postUser
       tags:
         - user
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters: []
       requestBody:
         description: post User
@@ -357,6 +378,9 @@ paths:
       operationId: getUser
       tags:
         - user
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters:
         - name: id
           in: path
@@ -395,6 +419,9 @@ paths:
       operationId: patchUser
       tags:
         - user
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
       parameters:
         - name: id
           in: path
@@ -437,7 +464,15 @@ paths:
         '503':
           description: Service Unavailable
 components:
-  securitySchemes: {}
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    AuthIndex:
+      type: apiKey
+      in: header
+      name: X-Auth-Index
   schemas:
     getCustomerResponse:
       type: object
