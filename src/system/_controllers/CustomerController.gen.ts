@@ -10,9 +10,9 @@ import { checkSchema, validationResult } from 'express-validator';
 import utils from "./../../system/_utils";
 import MongoQS from 'mongo-ts-querystring';
 
-import { UserModel } from '../_models/UserModel.gen';
+import { CustomerModel } from '../_models/CustomerModel.gen';
 
-class UserController extends controllerFactory._ControllerFactory {
+class CustomerController extends controllerFactory._ControllerFactory {
     public router: Router;
 
     constructor() {
@@ -33,12 +33,6 @@ class UserController extends controllerFactory._ControllerFactory {
                 isString: true,
                 custom: { options: this.isObjectId }
               },
-              authProfiles: {
-                in: 'query',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isString: true
-              },
               email: {
                 in: 'query',
                 optional: { options: { values: 'falsy', checkFalsy: true } },
@@ -46,6 +40,12 @@ class UserController extends controllerFactory._ControllerFactory {
                 isString: true
               },
               name: {
+                in: 'query',
+                optional: { options: { values: 'falsy', checkFalsy: true } },
+                notEmpty: true,
+                isString: true
+              },
+              phone: {
                 in: 'query',
                 optional: { options: { values: 'falsy', checkFalsy: true } },
                 notEmpty: true,
@@ -62,21 +62,9 @@ class UserController extends controllerFactory._ControllerFactory {
                 optional: { options: { values: 'falsy', checkFalsy: true } },
                 notEmpty: true,
                 isString: true
-              },
-              roles: {
-                in: 'query',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isString: true
-              },
-              profileErrors: {
-                in: 'query',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isString: true
               }
             }),
-            this.getListUser.bind(this)
+            this.getListCustomer.bind(this)
         );
 
         
@@ -90,18 +78,12 @@ class UserController extends controllerFactory._ControllerFactory {
                 custom: { options: this.isObjectId }
               }
             }),
-            this.getUser.bind(this)
+            this.getCustomer.bind(this)
         );
 
         
         this.router.post('/', 
             checkSchema(            {
-              authProfiles: {
-                in: 'body',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isArray: true
-              },
               email: {
                 in: 'body',
                 optional: { options: { values: 'falsy', checkFalsy: true } },
@@ -109,27 +91,21 @@ class UserController extends controllerFactory._ControllerFactory {
                 isString: true
               },
               name: { in: 'body', optional: false, notEmpty: true, isString: true },
+              phone: {
+                in: 'body',
+                optional: { options: { values: 'falsy', checkFalsy: true } },
+                notEmpty: true,
+                isString: true
+              },
               active: { in: 'body', optional: false, notEmpty: true, isBoolean: true },
               locale: {
                 in: 'body',
                 optional: { options: { values: 'falsy', checkFalsy: true } },
                 notEmpty: true,
                 isString: true
-              },
-              roles: {
-                in: 'body',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isArray: true
-              },
-              profileErrors: {
-                in: 'body',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isArray: true
               }
             }),
-            this.createUser.bind(this)
+            this.createCustomer.bind(this)
         );
 
         
@@ -145,12 +121,6 @@ class UserController extends controllerFactory._ControllerFactory {
                 isString: true,
                 custom: { options: this.isObjectId }
               },
-              authProfiles: {
-                in: 'body',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isArray: true
-              },
               email: {
                 in: 'body',
                 optional: { options: { values: 'falsy', checkFalsy: true } },
@@ -158,6 +128,12 @@ class UserController extends controllerFactory._ControllerFactory {
                 isString: true
               },
               name: {
+                in: 'body',
+                optional: { options: { values: 'falsy', checkFalsy: true } },
+                notEmpty: true,
+                isString: true
+              },
+              phone: {
                 in: 'body',
                 optional: { options: { values: 'falsy', checkFalsy: true } },
                 notEmpty: true,
@@ -174,29 +150,28 @@ class UserController extends controllerFactory._ControllerFactory {
                 optional: { options: { values: 'falsy', checkFalsy: true } },
                 notEmpty: true,
                 isString: true
-              },
-              roles: {
-                in: 'body',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isArray: true
-              },
-              profileErrors: {
-                in: 'body',
-                optional: { options: { values: 'falsy', checkFalsy: true } },
-                notEmpty: true,
-                isArray: true
               }
             }),
-            this.updateUser.bind(this)
+            this.updateCustomer.bind(this)
         );
 
         
-        // deleteRoute disabled
+        this.router.delete('/:id', 
+            checkSchema(            {
+              id: {
+                in: 'params',
+                optional: false,
+                notEmpty: true,
+                isString: true,
+                custom: { options: this.isObjectId }
+              }
+            }),
+            this.deleteCustomer.bind(this)
+        );
 
     };
 
-    public async getUser(req: Request, res: Response): Promise<Response> {
+    public async getCustomer(req: Request, res: Response): Promise<Response> {
         try {
             const validationError = validationResult(req);
             if ( ! validationError.isEmpty() ) {
@@ -206,7 +181,7 @@ class UserController extends controllerFactory._ControllerFactory {
                 });
             };
 
-            const result = await UserModel.findById(req.params.id);
+            const result = await CustomerModel.findById(req.params.id);
 
             if (!result) {
                 return utils.response.send(res, 404);
@@ -219,7 +194,7 @@ class UserController extends controllerFactory._ControllerFactory {
         }
     }
 
-    public async getListUser(req: Request, res: Response): Promise<Response> {
+    public async getListCustomer(req: Request, res: Response): Promise<Response> {
         try {
             const validationError = validationResult(req);
             if ( ! validationError.isEmpty() ) {
@@ -247,14 +222,14 @@ class UserController extends controllerFactory._ControllerFactory {
                 });
             };
 
-            const result = await UserModel.find(searchFilter, selectedFields).populate(populateOptions);
+            const result = await CustomerModel.find(searchFilter, selectedFields).populate(populateOptions);
             return utils.response.send(res, 200, { result });
         } catch (err:any) {
             return utils.response.send(res, 500, { result: err.message });
         }
     }
 
-    public async createUser(req: Request, res: Response): Promise<Response> {
+    public async createCustomer(req: Request, res: Response): Promise<Response> {
         try {
             const validationError = validationResult(req);
             if ( ! validationError.isEmpty() ) {
@@ -267,7 +242,7 @@ class UserController extends controllerFactory._ControllerFactory {
                 delete req.body._id;
             };
             
-            const result = await UserModel.create(req.body);
+            const result = await CustomerModel.create(req.body);
             if (!result) {
                 return utils.response.send(res, 400, {
                     code: utils.response.code.err_create
@@ -281,7 +256,7 @@ class UserController extends controllerFactory._ControllerFactory {
         };
     };
 
-    public async updateUser(req: Request, res: Response): Promise<Response> {
+    public async updateCustomer(req: Request, res: Response): Promise<Response> {
         try {
             const validationError = validationResult(req);
             if ( ! validationError.isEmpty() ) {
@@ -294,7 +269,7 @@ class UserController extends controllerFactory._ControllerFactory {
                 delete req.body._id;
             };
 
-            const result = await UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            const result = await CustomerModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
             if (!result) {
                 return utils.response.send(res, 404, {
                     code: utils.response.code.err_update
@@ -308,7 +283,7 @@ class UserController extends controllerFactory._ControllerFactory {
         }
     }
 
-    public async replaceUser(req: Request, res: Response): Promise<Response> {
+    public async replaceCustomer(req: Request, res: Response): Promise<Response> {
         try {
             const validationError = validationResult(req);
             if ( ! validationError.isEmpty() ) {
@@ -321,7 +296,7 @@ class UserController extends controllerFactory._ControllerFactory {
                 delete req.body._id;
             };
 
-            const result = await UserModel.replaceOne({_id: req.params.id}, req.body);
+            const result = await CustomerModel.replaceOne({_id: req.params.id}, req.body);
             if (!result) {
                 return utils.response.send(res, 404, { 
                     code: utils.response.code.err_update
@@ -335,7 +310,7 @@ class UserController extends controllerFactory._ControllerFactory {
         }
     }
 
-    public async deleteUser(req: Request, res: Response): Promise<Response> {
+    public async deleteCustomer(req: Request, res: Response): Promise<Response> {
         try {
             const validationError = validationResult(req);
             if ( ! validationError.isEmpty() ) {
@@ -345,7 +320,7 @@ class UserController extends controllerFactory._ControllerFactory {
                 });
             };
 
-            const result = await UserModel.findByIdAndDelete(req.params.id);
+            const result = await CustomerModel.findByIdAndDelete(req.params.id);
             if (!result) {
                 return utils.response.send(res, 404, {
                     code: utils.response.code.err_delete
@@ -360,4 +335,4 @@ class UserController extends controllerFactory._ControllerFactory {
     }
 }
 
-export default new UserController().router;
+export default new CustomerController().router;

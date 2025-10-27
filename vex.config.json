@@ -24,17 +24,15 @@
             "user"
         ]
     },
-    "sso": {
-        "useHttpOnlyCookieToken": false,
-        "oauthProviders": {
-            "google": false,
-            "microsoft": false,
-            "apple": false,
-            "github": false
-        }
-    },
     "_": {
         "headerComment": "",
         "writtedDir": []
+    },
+    "auth": {
+        "localAuth": true,
+        "oauthProviders": {
+            "google": false,
+            "github": false
+        }
     }
 }

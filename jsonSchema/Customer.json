@@ -1,0 +1,47 @@
+{
+    "type": "object",
+    "x-documentConfig": {
+        "methods": [
+            "get",
+            "getList",
+            "post",
+            "patch",
+            "delete"
+        ],
+        "documentName": "Customer"
+    },
+    "properties": {
+        "_id": {
+            "type": "string",
+            "x-format": "ObjectId",
+            "index": true
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "index": true
+        },
+        "name": {
+            "type": "string",
+            "maxLength": 64,
+            "required": true
+        },
+        "phone": {
+            "type": "string",
+            "required": false
+        },
+        "active": {
+            "type": "boolean",
+            "default": true,
+            "required": true
+        },
+        "locale": {
+            "type": "string",
+            "maxLength": 8
+        }
+    },
+    "required": [
+        "name",
+        "active"
+    ]
+}

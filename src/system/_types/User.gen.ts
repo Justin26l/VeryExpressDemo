@@ -4,6 +4,7 @@ export interface User {
         provider?: string;
         authId?: string;
         username?: string;
+        password?: string;
     }[];
     email?: string;
     name: string;

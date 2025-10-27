@@ -8,7 +8,8 @@ export const UserSchemaDefinition: SchemaDefinition = {
       {
         provider: { type: String, index: true, required: false },
         authId: { type: String, index: true, required: false },
-        username: { type: String, index: false, required: false }
+        username: { type: String, index: false, required: false },
+        password: { type: String, index: false, required: false }
       }
     ],
     index: false,

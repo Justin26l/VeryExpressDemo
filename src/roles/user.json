@@ -1,4 +1,10 @@
 {
+    "Customer": [
+        "create",
+        "read",
+        "update",
+        "delete"
+    ],
     "Session": [
         "create",
         "read",
