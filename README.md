@@ -18,6 +18,8 @@
     npm build    
     npm run start
     ```
+5. visit development host:  
+   `http://127.0.0.1:3000`
 
 # Resource
 - [Documents](https://github.com/Justin26l/VeryExpress/blob/main/README.md)
