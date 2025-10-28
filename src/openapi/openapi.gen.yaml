@@ -6,75 +6,6 @@ info:
 paths:
   /api/customer:
     x-documentName: Customer
-    get:
-      operationId: getListCustomer
-      tags:
-        - customer
-      security:
-        - BearerAuth: []
-        - AuthIndex: []
-      parameters:
-        - name: _id
-          in: query
-          required: false
-          schema:
-            type: string
-            x-format: ObjectId
-        - name: email
-          in: query
-          required: false
-          schema:
-            type: string
-            format: email
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-            maxLength: 64
-        - name: phone
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: active
-          in: query
-          required: false
-          schema:
-            type: boolean
-        - name: locale
-          in: query
-          required: false
-          schema:
-            type: string
-            maxLength: 8
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getCustomerResponse'
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-        '405':
-          description: Method Not Allowed
-        '413':
-          description: Payload Too Large
-        '429':
-          description: Too Many Requests
-        '500':
-          description: Internal Server Error
-        '502':
-          description: Bad Gateway
-        '503':
-          description: Service Unavailable
     post:
       operationId: postCustomer
       tags:
@@ -97,6 +28,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/postCustomerResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '413':
+          description: Payload Too Large
+        '429':
+          description: Too Many Requests
+        '500':
+          description: Internal Server Error
+        '502':
+          description: Bad Gateway
+        '503':
+          description: Service Unavailable
+  /api/customer/search:
+    x-documentName: Customer
+    post:
+      operationId: getListCustomer
+      tags:
+        - customer
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
+      parameters: []
+      requestBody:
+        description: Search Customer
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/getListCustomerBody'
+      responses:
+        '201':
+          description: Crerated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getListCustomerResponse'
         '400':
           description: Bad Request
         '401':
@@ -247,89 +222,12 @@ paths:
           description: Service Unavailable
   /api/session:
     x-documentName: Session
+  /api/session/search:
+    x-documentName: Session
   /api/session/{id}:
     x-documentName: Session
   /api/user:
     x-documentName: User
-    get:
-      operationId: getListUser
-      tags:
-        - user
-      security:
-        - BearerAuth: []
-        - AuthIndex: []
-      parameters:
-        - name: _id
-          in: query
-          required: false
-          schema:
-            type: string
-            x-format: ObjectId
-        - name: authProfiles
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: email
-          in: query
-          required: false
-          schema:
-            type: string
-            format: email
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-            maxLength: 64
-        - name: active
-          in: query
-          required: false
-          schema:
-            type: boolean
-        - name: locale
-          in: query
-          required: false
-          schema:
-            type: string
-            maxLength: 8
-        - name: roles
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: profileErrors
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getUserResponse'
-        '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-        '405':
-          description: Method Not Allowed
-        '413':
-          description: Payload Too Large
-        '429':
-          description: Too Many Requests
-        '500':
-          description: Internal Server Error
-        '502':
-          description: Bad Gateway
-        '503':
-          description: Service Unavailable
     post:
       operationId: postUser
       tags:
@@ -352,6 +250,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/postUserResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '413':
+          description: Payload Too Large
+        '429':
+          description: Too Many Requests
+        '500':
+          description: Internal Server Error
+        '502':
+          description: Bad Gateway
+        '503':
+          description: Service Unavailable
+  /api/user/search:
+    x-documentName: User
+    post:
+      operationId: getListUser
+      tags:
+        - user
+      security:
+        - BearerAuth: []
+        - AuthIndex: []
+      parameters: []
+      requestBody:
+        description: Search User
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/getListUserBody'
+      responses:
+        '201':
+          description: Crerated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getListUserResponse'
         '400':
           description: Bad Request
         '401':
@@ -493,7 +435,20 @@ components:
         locale:
           type: string
           maxLength: 8
-    getCustomerResponseList:
+    getListCustomerBody:
+      type: object
+      properties:
+        _filter:
+          type: object
+        _select:
+          type: array
+          items:
+            type: string
+        _join:
+          type: array
+          items:
+            type: string
+    getListCustomerResponseList:
       type: array
       items:
         type: object
@@ -631,7 +586,20 @@ components:
           type: array
           items:
             type: string
-    getUserResponseList:
+    getListUserBody:
+      type: object
+      properties:
+        _filter:
+          type: object
+        _select:
+          type: array
+          items:
+            type: string
+        _join:
+          type: array
+          items:
+            type: string
+    getListUserResponseList:
       type: array
       items:
         type: object
