@@ -1,18 +1,21 @@
 {
     "Customer": [
         "create",
+        "search",
         "read",
         "update",
         "delete"
     ],
     "Session": [
         "create",
+        "search",
         "read",
         "update",
         "delete"
     ],
     "User": [
         "create",
+        "search",
         "read",
         "update",
         "delete"

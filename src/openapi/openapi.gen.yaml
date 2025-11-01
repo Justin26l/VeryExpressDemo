@@ -59,7 +59,7 @@ paths:
         - AuthIndex: []
       parameters: []
       requestBody:
-        description: Search Customer
+        description: getList Customer
         required: false
         content:
           application/json:
@@ -281,7 +281,7 @@ paths:
         - AuthIndex: []
       parameters: []
       requestBody:
-        description: Search User
+        description: getList User
         required: false
         content:
           application/json:
@@ -448,7 +448,16 @@ components:
           type: array
           items:
             type: string
-    getListCustomerResponseList:
+      example:
+        _filter:
+          fieldName:
+            $regex: str
+            $options: i
+        _select:
+          - FieldName
+        _join:
+          - CollectionName
+    getListCustomerResponse:
       type: array
       items:
         type: object
@@ -599,7 +608,16 @@ components:
           type: array
           items:
             type: string
-    getListUserResponseList:
+      example:
+        _filter:
+          fieldName:
+            $regex: str
+            $options: i
+        _select:
+          - FieldName
+        _join:
+          - CollectionName
+    getListUserResponse:
       type: array
       items:
         type: object
